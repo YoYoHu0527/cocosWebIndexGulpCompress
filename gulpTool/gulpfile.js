@@ -5,11 +5,13 @@
 var path1 = 'E:/dev_EscapeMonkey/clientGames/EscapeMonkey/build/web-mobile/' //斗猿场
 var path2 = 'E:/dev_BattleRoyale/clientGames/BattleRoyale/build/web-mobile/' //大逃杀
 var path3 = 'E:/dev_Warcraft/clientGames/Warcraft/build/web-mobile/' //魔兽争霸
+var path4 = 'E:/dev_FruitsSlot/clientGames/FruitsSlot/build/web-mobile/' //水果机
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
 var copyPath2 = "E:/GameIndex/BattleRoyale/"
 var copyPath3 = "E:/GameIndex/Warcraft/"
+var copyPath4 = "E:/GameIndex/FruitsSlot/"
 
 //执行时候的目录
 var runMainPath = ""
@@ -154,6 +156,10 @@ gulp.task('build', function (done) {
 		case 3: //魔兽争霸
 			runMainPath = path3
 			runCopyPath = copyPath3
+			break;
+		case 4: //水果机
+			runMainPath = path4
+			runCopyPath = copyPath4
 			break;
 		default:
 			break;
