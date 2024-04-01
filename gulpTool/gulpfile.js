@@ -7,6 +7,7 @@ var path2 = 'E:/dev_BattleRoyale/clientGames/BattleRoyale/build/web-mobile/' //�
 var path3 = 'E:/dev_Warcraft/clientGames/Warcraft/build/web-mobile/' //魔兽争霸
 var path4 = 'E:/dev_FruitsSlot/clientGames/FruitsSlot/build/web-mobile/' //水果机
 var path5 = 'E:/dev_HorseRacing/clientGames/horseRacing/build/web-mobile/' //赛马
+var path6 = 'E:/dev_Roulette/clientGames/Roulette/build/web-mobile/' //轮盘
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -14,6 +15,7 @@ var copyPath2 = "E:/GameIndex/BattleRoyale/"
 var copyPath3 = "E:/GameIndex/Warcraft/"
 var copyPath4 = "E:/GameIndex/FruitsSlot/"
 var copyPath5 = "E:/GameIndex/HorseRacing/"
+var copyPath6 = "E:/GameIndex/Roulette/"
 
 //执行时候的目录
 var runMainPath = ""
@@ -146,30 +148,8 @@ gulp.task("addVersion", function (cb) {
 gulp.task('build', function (done) {
 	//在这个任务里面去设置路径
 	const args = process.argv[3][2]
-	switch (Number(args)) {
-		case 1: //斗猿场
-			runMainPath = path1
-			runCopyPath = copyPath1
-			break;
-		case 2: //大逃杀
-			runMainPath = path2
-			runCopyPath = copyPath2
-			break;
-		case 3: //魔兽争霸
-			runMainPath = path3
-			runCopyPath = copyPath3
-			break;
-		case 4: //水果机
-			runMainPath = path4
-			runCopyPath = copyPath4
-			break;
-		case 5: //赛马
-			runMainPath = path5
-			runCopyPath = copyPath5
-			break;
-		default:
-			break;
-	}
+	runMainPath = "path" + args
+	runCopyPath = "copyPath" + args
 	const buildTasks = gulp.series('addVersion', 'copy', 'replaceDR', 'minify-json', 'htmlmin', 'script');
 	buildTasks()
 	done(); // 调用回调函数，通知 Gulp 任务完成
