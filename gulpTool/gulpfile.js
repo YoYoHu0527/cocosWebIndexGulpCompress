@@ -148,8 +148,34 @@ gulp.task("addVersion", function (cb) {
 gulp.task('build', function (done) {
 	//在这个任务里面去设置路径
 	const args = process.argv[3][2]
-	runMainPath = "path" + args
-	runCopyPath = "copyPath" + args
+	switch (Number(args)) {
+		case 1: //斗猿场
+			runMainPath = path1
+			runCopyPath = copyPath1
+			break;
+		case 2: //大逃杀
+			runMainPath = path2
+			runCopyPath = copyPath2
+			break;
+		case 3: //魔兽争霸
+			runMainPath = path3
+			runCopyPath = copyPath3
+			break;
+		case 4: //水果机
+			runMainPath = path4
+			runCopyPath = copyPath4
+			break;
+		case 5: //赛马
+			runMainPath = path5
+			runCopyPath = copyPath5
+			break;
+		case 6: //轮盘赌
+			runMainPath = path6
+			runCopyPath = copyPath6
+			break;
+		default:
+			break;
+	}
 	const buildTasks = gulp.series('addVersion', 'copy', 'replaceDR', 'minify-json', 'htmlmin', 'script');
 	buildTasks()
 	done(); // 调用回调函数，通知 Gulp 任务完成
