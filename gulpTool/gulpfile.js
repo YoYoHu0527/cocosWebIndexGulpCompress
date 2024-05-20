@@ -107,9 +107,9 @@ gulp.task('replaceDR', function (cb) {
 });
 
 
-//将闪屏 css indexDR 拷回去
+//将闪屏 css indexDR 加载gif 拷回去
 gulp.task('copy', function (cb) {
-	gulp.src([runCopyPath + '*.jpg', runCopyPath + '*.png', runCopyPath + '*.css', runCopyPath + '*.html']) // 选择要拷贝文件
+	gulp.src([runCopyPath + '*.jpg', runCopyPath + '*.gif', runCopyPath + '*.png', runCopyPath + '*.css', runCopyPath + '*.html']) // 选择要拷贝文件
 		.pipe(gulp.dest(runMainPath)) // 将图片文件拷贝到目标目录，覆盖同名文件
 		.on('end', cb);
 });
