@@ -17,6 +17,7 @@ echo     4. FruitsSlot (水果机)
 echo     5. HorseRacing (赛马)
 echo     6. Roulette (轮盘赌)
 echo     7. Dice (摇骰子)
+echo     8. Rocket (火箭游戏)
 echo.
 
 set /p choice=Enter the number corresponding to your choice: 
