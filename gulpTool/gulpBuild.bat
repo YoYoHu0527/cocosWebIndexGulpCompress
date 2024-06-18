@@ -10,14 +10,15 @@ echo 当没有需要的游戏时 需要1.修改bat 2.新建启动index 3.修改g
 echo.
 
 echo select A path
-echo     1. EscapeMonkey (斗猿场)
-echo     2. BattleRoyale (大逃杀)
-echo     3. Warcraft (魔兽争霸)
-echo     4. FruitsSlot (水果机)
-echo     5. HorseRacing (赛马)
-echo     6. Roulette (轮盘赌)
-echo     7. Dice (摇骰子)
-echo     8. Rocket (火箭游戏)
+echo     1. EscapeMonkey (斗猿场-全屏)
+echo     2. BattleRoyale (大逃杀-全屏)
+echo     3. Warcraft (魔兽争霸-全屏)
+echo     4. FruitsSlot (水果机-半屏)
+echo     5. HorseRacing (赛马-半屏)
+echo     6. Roulette (轮盘赌-半屏)
+echo     7. Dice (摇骰子-半屏)
+echo     8. Rocket (火箭游戏-半屏)
+echo     9. Billiard (台球游戏-半屏)
 echo.
 
 set /p choice=Enter the number corresponding to your choice: 
