@@ -155,7 +155,7 @@ gulp.task("addVersion", function (cb) {
  */
 gulp.task('build', function (done) {
 	//在这个任务里面去设置路径
-	const args = process.argv[3][2]
+	const args = process.argv[3].substring(2)
 	switch (Number(args)) {
 		case 1: //斗猿场
 			runMainPath = path1
