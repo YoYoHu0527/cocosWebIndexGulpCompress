@@ -12,7 +12,7 @@ var path7 = 'E:/dev_Dice/clientGames/Dice/build/web-mobile/' //骰子
 var path8 = 'E:/dev_Rocket/clientGames/Rocket/build/web-mobile/' //火箭
 var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
-var path11 = 'E:/dev_Fishing/clientGames/Plinko/build/web-mobile/' //捕鱼
+var path11 = 'E:/dev_Fishing/clientGames/Fishing/build/web-mobile/' //捕鱼
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
