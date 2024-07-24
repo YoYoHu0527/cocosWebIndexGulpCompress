@@ -12,6 +12,7 @@ var path7 = 'E:/dev_Dice/clientGames/Dice/build/web-mobile/' //骰子
 var path8 = 'E:/dev_Rocket/clientGames/Rocket/build/web-mobile/' //火箭
 var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
+var path11 = 'E:/dev_Fishing/clientGames/Plinko/build/web-mobile/' //捕鱼
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -24,6 +25,7 @@ var copyPath7 = "E:/GameIndex/Dice/"
 var copyPath8 = "E:/GameIndex/Rocket/"
 var copyPath9 = "E:/GameIndex/Billiard/"
 var copyPath10 = "E:/GameIndex/Plinko/"
+var copyPath11 = "E:/GameIndex/Fishing/"
 
 //执行时候的目录
 var runMainPath = ""
@@ -196,6 +198,10 @@ gulp.task('build', function (done) {
 		case 10: //台球游戏
 			runMainPath = path10
 			runCopyPath = copyPath10
+			break;
+		case 11: //捕鱼游戏
+			runMainPath = path11
+			runCopyPath = copyPath11
 			break;
 		default:
 			break;

@@ -20,6 +20,7 @@ echo     7. Dice (摇骰子-半屏)
 echo     8. Rocket (火箭游戏-半屏)
 echo     9. Billiard (台球游戏-半屏)
 echo     10. Plinko (弹珠游戏-半屏)
+echo     11. Fishing (捕鱼游戏-半屏)
 echo.
 
 set /p choice=Enter the number corresponding to your choice: 
