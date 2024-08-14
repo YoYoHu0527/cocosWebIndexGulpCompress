@@ -1,0 +1,2 @@
+# cocosWebIndexGulpCompress
+cocosCreator3.x版本打包的web端工程可以使用这个工具将css和index.html里面的部分引入的js代码直接内联进html文件
