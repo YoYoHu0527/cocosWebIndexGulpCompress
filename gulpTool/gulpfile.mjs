@@ -13,6 +13,7 @@ var path8 = 'E:/dev_Rocket/clientGames/Rocket/build/web-mobile/' //火箭
 var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
 var path11 = 'E:/dev_Fishing/clientGames/Fishing/build/web-mobile/' //捕鱼
+var path12 = 'E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/' //俄罗斯方块
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -26,24 +27,38 @@ var copyPath8 = "E:/GameIndex/Rocket/"
 var copyPath9 = "E:/GameIndex/Billiard/"
 var copyPath10 = "E:/GameIndex/Plinko/"
 var copyPath11 = "E:/GameIndex/Fishing/"
+var copyPath12 = "E:/GameIndex/Tetris/"
 
 //执行时候的目录
 var runMainPath = ""
 var runCopyPath = ""
 
+let assetsTime = Date.now().toString() //取一个时间戳
+
+// var gulp = require('gulp');
+// var htmlmin = require('gulp-htmlmin');
+// var fileInline = require('gulp-file-inline');
+// var uglify = require('gulp-uglify');
+// var jsonmin = require('gulp-jsonmin');
+// var replace = require('gulp-replace');
+// var fs = require('fs');
+// const plumber = require('gulp-plumber');
 
 
-var gulp = require('gulp');
-var htmlmin = require('gulp-htmlmin');
-var fileInline = require('gulp-file-inline');
-var uglify = require('gulp-uglify');
-var jsonmin = require('gulp-jsonmin');
-var replace = require('gulp-replace');
-var fs = require('fs');
+//使用es模块 gulp-zip好像只能用import导入
+import fs from 'fs'
+import gulp from 'gulp'
+import fileInline from 'gulp-file-inline'
+import htmlmin from 'gulp-htmlmin'
+import jsonmin from 'gulp-jsonmin'
+import replace from 'gulp-replace'
+import uglify from 'gulp-uglify'
+import zip from 'gulp-zip'
+import path from 'path'
 
 // 压缩html 内联css js
 gulp.task('htmlmin', function (cb) {
-	gulp.src([runMainPath + 'indexD.html', runMainPath + 'indexR.html'])
+	gulp.src(runMainPath + '*.html')
 		.pipe(fileInline())
 		.pipe(htmlmin({
 			collapseWhitespace: true,//移出空格
@@ -202,7 +217,16 @@ gulp.task('build', function (done) {
 		case 11: //捕鱼游戏
 			runMainPath = path11
 			runCopyPath = copyPath11
-			break;
+		case 12: //俄罗斯方块
+			runMainPath = path12
+			runCopyPath = copyPath12
+
+			//1.先替换入口目录index*.html里面引入文件的MD5值,2.再把入口文件里面的所有值拷贝回去,3.内联css、js,4.压缩所有js,压缩所有json
+			const buildTasks__tetris = gulp.series("copy_cocos2dJs", "replaceDR_tetris", "copy_tetris", "replaceMD5_tetris", "htmlmin", "script_tetris", "minify-json", "tetris_zip", 'clean');
+			//执行tetris_zip任务
+			buildTasks__tetris()
+			done(); // 调用回调函数，通知 Gulp 任务完成
+			return;
 		default:
 			break;
 	}
@@ -212,4 +236,121 @@ gulp.task('build', function (done) {
 })
 
 // gulp.series('addVersion', 'copy', 'replaceDR', 'minify-json', 'htmlmin', 'script'));
+
+
+/**
+ * 单独为俄罗斯方块写一个
+ */
+//===========================================================>>开始
+
+//将css indexDR拷回去
+gulp.task('copy_tetris', function (cb) {
+	gulp.src([runCopyPath + '*.css', runCopyPath + '*.html', runCopyPath + '*.js',]) // 选择要拷贝文件
+		.pipe(gulp.dest(runMainPath)) // 将图片文件拷贝到目标目录，覆盖同名文件
+		.on('end', cb);
+});
+
+//修改uncompress里面的MD5值
+gulp.task('replaceMD5_tetris', function (cb) {
+	// 读取源.html文件的内容
+	gulp.src(runMainPath + 'uncompress.js')
+		// 使用正则表达式替换 assetsMd5 的值
+		.pipe(replace(/let assetsMd5 = ".*?";/, `let assetsMd5 = "${assetsTime}";`))
+		.pipe(gulp.dest(runMainPath)) // 将处理后的 HTML 文件保存到目标目录
+		.on('end', cb);
+});
+
+// 匹配DR中的值并且替换为新的
+gulp.task('replaceDR_tetris', function (cb) {
+	// 读取源.html文件的内容
+	const bHtmlContent = fs.readFileSync(runMainPath + 'index.html', 'utf8');
+
+	// 从源.html中提取出settings标签的src属性值
+	const srcMatchSetting = bHtmlContent.match(/<script\s+src="src\/settings\.[a-zA-Z0-9]+\.js"\s+charset="utf-8"><\/script>/)
+	const srcAttributeValueSetting = srcMatchSetting[0].match(/<script\s+src="([^"]+)"\s+charset="utf-8"><\/script>/)[1];; // 提取到的src属性值
+
+	// 从源.html中提取出main标签的src属性值
+	const srcMatchMain = bHtmlContent.match(/<script\s+src="(main\.[a-zA-Z0-9]+\.js)"\s+charset="utf-8">\s*<\/script>/);
+	const srcAttributeValueMain = srcMatchMain ? srcMatchMain[1] : ''; // 提取到的src属性值
+
+
+	//处理在indexD中的vsconsole 下面替换的时候 空就不替换
+	const srcMatchVsconsole = bHtmlContent.match(/<script\s+src="(vconsole\.min\.[a-zA-Z0-9]+\.js)"><\/script>/);
+	const srcAttributeValuesrcVsconsole = srcMatchVsconsole ? srcMatchVsconsole[0] : ''; // 提取到的src属性值
+
+
+	gulp.src(runCopyPath + '*.html') // 选择 index.html 文件作为源文件
+
+		.pipe(replace(/src\/settings\.[a-zA-Z0-9]+\.js/g, srcAttributeValueSetting))
+
+		.pipe(replace(/main\.[a-zA-Z0-9]+\.js/g, srcAttributeValueMain))
+
+
+		.pipe(replace(/<script\s+src="vconsole\.min\.[a-zA-Z0-9]+\.js"><\/script>/g, srcAttributeValuesrcVsconsole))
+
+		.pipe(gulp.dest(runCopyPath)) // 将处理后的 HTML 文件保存到目标目录
+		.on('end', cb);
+});
+
+
+// 压缩js 这个js不知道为什么一直失败
+gulp.task('script_tetris', function (cb) {
+	gulp.src(["E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/" + '**/*.js', '!E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/vconsole.min*.js'])
+		.pipe(uglify())
+		.pipe(gulp.dest("E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/"))
+		.on('end', cb);
+});
+
+//拷贝cocos2d-js.js 到assets目录
+gulp.task('copy_cocos2dJs', function (cb) {
+	gulp.src(runMainPath + '/cocos2d-js*.js')
+		.pipe(gulp.dest(runMainPath + 'assets/'))
+		.on('end', cb);
+});
+
+
+//生成压缩包 我需要将assets目录压缩
+gulp.task('tetris_zip', function (cb) {
+	const zipFileName = `assets_${assetsTime}.zip`;
+	gulp.src(runMainPath + 'assets/**/*') // 指定要压缩的目录
+		.pipe(zip(zipFileName)) // 压缩成 compressed.zip 文件
+		.pipe(gulp.dest(runMainPath)) // 输出压缩文件到指定目录
+		.on('end', cb);
+
+});
+
+// 定义一个任务来删除其他内容
+gulp.task('clean', function (cb) {
+	function deleteFiles(dir) {
+		fs.readdirSync(dir).forEach(file => {
+			const filePath = path.join(dir, file);
+			if (fs.statSync(filePath).isDirectory()) {
+				deleteFiles(filePath); // 递归删除子目录中的文件
+			} else {
+				const ext = path.extname(filePath).toLowerCase();
+				if (ext !== '.html' && ext !== '.zip') {
+					fs.unlinkSync(filePath); // 删除除了 .html 和 .zip 文件之外的所有文件
+				}
+			}
+		});
+	}
+	function deleteEmptyDirectories(dir) {
+		fs.readdirSync(dir).forEach(file => {
+			const filePath = path.join(dir, file);
+			if (fs.statSync(filePath).isDirectory()) {
+				deleteEmptyDirectories(filePath); // 递归删除子目录中的空目录
+				if (fs.readdirSync(filePath).length === 0) {
+					fs.rmdirSync(filePath); // 删除空目录
+				}
+			}
+		});
+	}
+
+	deleteFiles(runMainPath);
+	deleteEmptyDirectories(runMainPath);
+	cb(); // 标记任务完成
+
+});
+
+//<<===========================================================结束
 
