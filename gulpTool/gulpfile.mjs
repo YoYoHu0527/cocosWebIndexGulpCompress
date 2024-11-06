@@ -14,6 +14,7 @@ var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
 var path11 = 'E:/dev_Fishing/clientGames/Fishing/build/web-mobile/' //捕鱼
 var path12 = 'E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/' //俄罗斯方块
+var path13 = 'E:/dev_triColorLottery/clientGames/triColorLottery/build/web-mobile/' //三色彩票游戏
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -28,6 +29,7 @@ var copyPath9 = "E:/GameIndex/Billiard/"
 var copyPath10 = "E:/GameIndex/Plinko/"
 var copyPath11 = "E:/GameIndex/Fishing/"
 var copyPath12 = "E:/GameIndex/Tetris/"
+var copyPath13 = "E:/GameIndex/triColorLottery/"
 
 //执行时候的目录
 var runMainPath = ""
@@ -89,7 +91,7 @@ gulp.task('minify-json', function (cb) {
 
 // 匹配DR中的值并且替换为新的
 gulp.task('replaceDR', function (cb) {
-	// 读取B.html文件的内容
+	// 读取源.html文件的内容
 	const bHtmlContent = fs.readFileSync(runMainPath + 'index.html', 'utf8');
 
 	// 从源.html中提取出Polyfills标签的src属性值
@@ -101,12 +103,62 @@ gulp.task('replaceDR', function (cb) {
 	const srcAttributeValueSystemJS = srcMatchSystemJS ? srcMatchSystemJS[1] : ''; // 提取到的src属性值
 
 	// 从源.html中提取出Import map标签的src属性值
-	const srcMatchImportMap = bHtmlContent.match(/<script\s+src="(src\/import-map\.[a-zA-Z0-9]+\.json)"\s+type="systemjs-importmap"\s+charset="utf-8">\s*<\/script>/);
-	const srcAttributeValueImportMap = srcMatchImportMap ? srcMatchImportMap[1] : ''; // 提取到的src属性值
+	// const srcMatchImportMap = bHtmlContent.match(/<script\s+src="(src\/import-map\.[a-zA-Z0-9]+\.json)"\s+type="systemjs-importmap"\s+charset="utf-8">\s*<\/script>/);
+	// const srcAttributeValueImportMap = srcMatchImportMap ? srcMatchImportMap[1] : ''; // 提取到的src属性值
+
+	//读取cc.js文件
+	let ccJsContent = function () {
+		// 指定文件目录
+		const directoryPath = runMainPath + 'cocos-js';
+		let fileName = ''
+		// 读取目录下的文件
+		try {
+			// 同步读取目录下的文件
+			const files = fs.readdirSync(directoryPath);
+			// 遍历文件
+			for (const file of files) {
+				// 提取文件名中的部分信息
+				if (file.startsWith('cc.') && file.endsWith('.js')) {
+					fileName = file; // 获取完整文件名，如 cc.0879.js
+					break; // 跳出循环
+				}
+			}
+		} catch (err) {
+			console.error('Error reading directory:', err);
+		}
+
+		return fileName;
+	}
+	let ccName = ccJsContent()
+
+	//读取settings.json文件
+	let settingsJsonContent = function () {
+		// 指定文件目录
+		const directoryPath = runMainPath + 'src';
+		let fileName = ''
+
+		try {
+			// 同步读取目录下的文件
+			const files = fs.readdirSync(directoryPath);
+			// 遍历文件
+			for (const file of files) {
+				// 提取文件名中的部分信息
+				if (file.startsWith('settings.') && file.endsWith('.json')) {
+					fileName = file; // 获取完整文件名，如 cc.0879.js
+					break; // 跳出循环
+				}
+			}
+		} catch (err) {
+			console.error('Error reading directory:', err);
+		}
+
+		return fileName;
+	}
+	let settingsJsonName = settingsJsonContent()
 
 	//处理入口index文件
-	const srcMatchIndex = bHtmlContent.match(/System\.import\('.\/index\.[a-zA-Z0-9]+\.js'\)/);
-	const srcAttributeValuesrcIndex = srcMatchIndex ? srcMatchIndex[0] : ''; // 提取到的src属性值
+	// const srcMatchIndex = bHtmlContent.match(/System\.import\('.\/index\.[a-zA-Z0-9]+\.js'\)/);
+	// const srcAttributeValuesrcIndex = srcMatchIndex ? srcMatchIndex[0] : ''; // 提取到的src属性值
 
 	//处理在indexD中的vsconsole
 	const srcMatchVsconsole = bHtmlContent.match(/<script\s+src="\.\/vconsole\.min\.[a-zA-Z0-9]+\.js"><\/script>/);
@@ -119,9 +171,9 @@ gulp.task('replaceDR', function (cb) {
 
 		.pipe(replace(/src\/system\.bundle\.[a-zA-Z0-9]+\.js/g, srcAttributeValueSystemJS))
 
-		.pipe(replace(/src\/import-map\.[a-zA-Z0-9]+\.json/g, srcAttributeValueImportMap))
+		.pipe(replace(/cc\.[a-zA-Z0-9]+\.js/g, ccName))
 
-		.pipe(replace(/System\.import\('.\/index\.[a-zA-Z0-9]+\.js'\)/g, srcAttributeValuesrcIndex))
+		.pipe(replace(/settings\.[a-zA-Z0-9]+\.json/g, settingsJsonName))
 
 		.pipe(replace(/<script\s+src="\.\/vconsole\.min\.[a-zA-Z0-9]+\.js"><\/script>/g, srcAttributeValuesrcVsconsole))
 
@@ -217,6 +269,7 @@ gulp.task('build', function (done) {
 		case 11: //捕鱼游戏
 			runMainPath = path11
 			runCopyPath = copyPath11
+			break;
 		case 12: //俄罗斯方块
 			runMainPath = path12
 			runCopyPath = copyPath12
@@ -227,9 +280,14 @@ gulp.task('build', function (done) {
 			buildTasks__tetris()
 			done(); // 调用回调函数，通知 Gulp 任务完成
 			return;
+		case 13: //三色彩票游戏
+			runMainPath = path13
+			runCopyPath = copyPath13
+			break;
 		default:
 			break;
 	}
+	//版本号加1、将入口文件拷贝到构建后的目录、替换为新值、压缩json、内联html、压缩js
 	const buildTasks = gulp.series('addVersion', 'copy', 'replaceDR', 'minify-json', 'htmlmin', 'script');
 	buildTasks()
 	done(); // 调用回调函数，通知 Gulp 任务完成
