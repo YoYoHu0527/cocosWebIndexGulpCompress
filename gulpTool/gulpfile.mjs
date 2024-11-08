@@ -14,7 +14,7 @@ var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
 var path11 = 'E:/dev_Fishing/clientGames/Fishing/build/web-mobile/' //捕鱼
 var path12 = 'E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/' //俄罗斯方块
-var path13 = 'E:/dev_triColorLottery/clientGames/lottery/build/web-mobile/' //三色彩票游戏
+var path13 = 'E:/dev_lottery/clientGames/lottery/build/web-mobile/' //三色彩票游戏
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -29,7 +29,7 @@ var copyPath9 = "E:/GameIndex/Billiard/"
 var copyPath10 = "E:/GameIndex/Plinko/"
 var copyPath11 = "E:/GameIndex/Fishing/"
 var copyPath12 = "E:/GameIndex/Tetris/"
-var copyPath13 = "E:/GameIndex/triColorLottery/"
+var copyPath13 = "E:/GameIndex/lottery/"
 
 //执行时候的目录
 var runMainPath = ""
