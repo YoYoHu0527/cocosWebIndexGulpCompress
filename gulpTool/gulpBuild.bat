@@ -22,7 +22,7 @@ echo     9. Billiard (台球游戏-半屏)
 echo     10. Plinko (弹珠游戏-半屏)
 echo     11. Fishing (捕鱼游戏-半屏)
 echo     12. Tetris (俄罗斯方块-房间内游戏)
-echo     13. triColorLottery (三色彩票-半屏)
+echo     13. lottery (三色彩票-半屏)
 echo.
 
 set /p choice=Enter the number corresponding to your choice: 

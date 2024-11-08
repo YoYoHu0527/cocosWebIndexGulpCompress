@@ -14,7 +14,7 @@ var path9 = 'E:/dev_Billiard/clientGames/Billiard/build/web-mobile/' //台球
 var path10 = 'E:/dev_Plinko/clientGames/Plinko/build/web-mobile/' //弹珠
 var path11 = 'E:/dev_Fishing/clientGames/Fishing/build/web-mobile/' //捕鱼
 var path12 = 'E:/dev_Tetris_2x/clientGames/Tetris_2x/build/web-mobile/' //俄罗斯方块
-var path13 = 'E:/dev_triColorLottery/clientGames/triColorLottery/build/web-mobile/' //三色彩票游戏
+var path13 = 'E:/dev_triColorLottery/clientGames/lottery/build/web-mobile/' //三色彩票游戏
 
 //拷贝目录
 var copyPath1 = "E:/GameIndex/EscapeMonkey/"
@@ -275,7 +275,8 @@ gulp.task('build', function (done) {
 			runCopyPath = copyPath12
 
 			//1.先替换入口目录index*.html里面引入文件的MD5值,2.再把入口文件里面的所有值拷贝回去,3.内联css、js,4.压缩所有js,压缩所有json
-			const buildTasks__tetris = gulp.series("copy_cocos2dJs", "replaceDR_tetris", "copy_tetris", "replaceMD5_tetris", "htmlmin", "script_tetris", "minify-json", "tetris_zip", 'clean');
+			// const buildTasks__tetris = gulp.series("copy_cocos2dJs", "replaceDR_tetris", "copy_tetris", "replaceMD5_tetris", "htmlmin", "script_tetris", "minify-json", "tetris_zip", 'clean');
+			const buildTasks__tetris = gulp.series("copy_cocos2dJs", "replaceDR_tetris", "copy_tetris", "replaceMD5_tetris", "htmlmin", "script_tetris", "minify-json", "tetris_zip");
 			//执行tetris_zip任务
 			buildTasks__tetris()
 			done(); // 调用回调函数，通知 Gulp 任务完成
